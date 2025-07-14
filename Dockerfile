@@ -26,9 +26,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy existing app directory contents
 COPY . /var/www
 
-# Set permissions
+# Set permissions (FIXED indentation)
 RUN chown -R www-data:www-data /var/www \
-    && chmod -R 775 /var/www/storage
+    && chmod -R 775 storage bootstrap/cache
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
@@ -39,5 +39,5 @@ RUN npm install && npm run build
 # Expose port
 EXPOSE 8000
 
-# Start Laravel app
-CMD php artisan serve --host=0.0.0.0 --port=8000
+# Start Laravel app with startup echo and wait
+CMD echo "Starting Laravel..." && sleep 10 && php artisan serve --host=0.0.0.0 --port=8000
